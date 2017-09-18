@@ -5,6 +5,20 @@ import java.net.*;
 
 public class EchoClient {
 	
+	static byte [] prepareMessage (String message) {
+		byte [] messageBytes = message.getBytes();
+		byte [] retData = new byte [messageBytes.length + 1];
+		
+		for (int i = 0; i < messageBytes.length; i++) {
+			retData[i] = messageBytes[i];
+		}
+		
+		// Add null byte to specify termination
+		retData[retData.length - 1] = 0x00;
+		
+		return retData;
+	}
+	
 	public static void main (String [] args) {
 		
 		try {
@@ -22,13 +36,13 @@ public class EchoClient {
 				}
 				
 				// Send message as bytes to server
-				byte[] messageInBytes = message.getBytes();
-				out.write(messageInBytes);
+				out.write(prepareMessage(message));
 				
 				// Get echo back from server
+				System.out.println("Waiting for response back from server");
 				while (true) {
 					int response = in.read();
-					
+					System.out.println("Recieved response from server " + response);
 				}
 				
 				// conn.close();
