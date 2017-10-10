@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -14,6 +15,9 @@ int main (int argc, char *argv[]) {
      */
 
     int pipeFds[2]; 
+    int fileBytesLength;
+    char buffer[100];
+    char childBuffer[100];
     
     // Check if 3 arguments were supplied.
     if (argc != 3) {
@@ -21,12 +25,12 @@ int main (int argc, char *argv[]) {
       exit(1);
     }
     
-    char*[] srcFile = argv[1];
-    char*[] dstFile = argv[2];
+    char* srcFile = argv[1];
+    char* dstFile = argv[2];
 
     // Attempt to create a pipe.
     if (pipe(pipeFds) < 0) {
-      perror("Something went wrong creating the pipe! %s\n", strerror(errno));
+      printf("Something went wrong creating the pipe! %s\n", strerror(errno));
       exit(1);
     }
 
@@ -35,30 +39,30 @@ int main (int argc, char *argv[]) {
 
       // If there was an errorforking a child process
       case -1:
-        perror("Error forking child process. %s\n", strerror(errno));
+        printf("Error forking child process. %s\n", strerror(errno));
         exit(1);
       
       // If the current executing process is a child process
+      // Read the file from upstream parent process and write it to a new file.
       case 0: 
+        close(pipeFds[1]);                                                        // Close writing end of pipe upstream.
+        ssize_t num_bytes_child = read(pipeFds[0], childBuffer, sizeOf(childBuffer));   // Read file contents from upstream pipe into childBuffer
+        close(pipeFds[0]);                                                        // close reading upstream pipe when we're done with it
+
+        int targetDesc = open(dstFile, O_CREAT);                                  // Open a file for writing, create file descriptor.
+        write(targetDesc, childBuffer, num_bytes_child);                            // Write contents of buffer to new file descriptor.
         
 
       // If the current process is the parent process.
+      // Read the file and send it down to the child process to write.
       default: 
-
-        int filedesc = open(srcFile, O_RDONLY);
+        close(pipeFds[0]);                                              // close reading end of pipe downstream.
+        int fileInDesc = open(srcFile, O_RDONLY);                       // Read file into file descriptor
+        ssize_t num_bytes = read(fileInDesc, buffer, sizeof(buffer));   // Get number bytes to read
+        write(pipeFds[1], buffer, num_bytes);                           // Write bytes to child process.
+        close(pipeFds[1]);                                              // Close writing downstream pipe when we're done with it.
 
     }
 
-    
-
-    // target = open("copy.txt", O_CREAT |O_WRONLY, 00777);
-
-    // // ======================================
-    // // ========== CHILD PROCESS =============
-    // // ======================================
-
-
-    // ssize_t count = read( fd[0], buffer, sizeof(buffer)-1 );
-    printf("%d", argc);
     return 0;
 }
