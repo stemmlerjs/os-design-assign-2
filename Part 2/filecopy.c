@@ -46,7 +46,7 @@ int main (int argc, char *argv[]) {
       // Read the file from upstream parent process and write it to a new file.
       case 0: 
         close(pipeFds[1]);                                                        // Close writing end of pipe upstream.
-        ssize_t num_bytes_child = read(pipeFds[0], childBuffer, sizeOf(childBuffer));   // Read file contents from upstream pipe into childBuffer
+        ssize_t num_bytes_child = read(pipeFds[0], childBuffer, sizeof(childBuffer));   // Read file contents from upstream pipe into childBuffer
         close(pipeFds[0]);                                                        // close reading upstream pipe when we're done with it
 
         int targetDesc = open(dstFile, O_CREAT);                                  // Open a file for writing, create file descriptor.
