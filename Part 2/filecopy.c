@@ -49,7 +49,7 @@ int main (int argc, char *argv[]) {
         ssize_t num_bytes_child = read(pipeFds[0], childBuffer, sizeof(childBuffer));   // Read file contents from upstream pipe into childBuffer
         close(pipeFds[0]);                                                        // close reading upstream pipe when we're done with it
 
-        int targetDesc = open(dstFile, O_CREAT);                                  // Open a file for writing, create file descriptor.
+        int targetDesc = open(dstFile, O_CREAT | O_WRONLY);                                  // Open a file for writing, create file descriptor.
         write(targetDesc, childBuffer, num_bytes_child);                            // Write contents of buffer to new file descriptor.
         
 
