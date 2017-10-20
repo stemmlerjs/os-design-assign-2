@@ -8,17 +8,16 @@ public class EchoServer {
  private ServerSocket server;
  private Socket client;
  private int port = 8998;
- private boolean connection;
+ private boolean connection = true;
  
  public EchoServer () {
   try {
    // Create socket server
    server = new ServerSocket(port);
-   connection = true;
    
    System.out.println("[Server]: Started. Waiting for connection on port " + port);
    
-   while(connection == true){
+   while(connection){
      // Accept a single connection
      client = server.accept();
      System.out.println("[Server]: Client connected");
@@ -28,19 +27,17 @@ public class EchoServer {
      
      DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
      
-     while(connection == true){
+     while(connection){
        //Get the message from the input stream
        String msg = in.readUTF();
        System.out.println("[Server]: Message received: " + msg);
-       
-       if(msg.equals(".")){
-         connection = false; 
-       }
        
        //Output the message to the output stream
        out.writeUTF(msg);
        out.flush();
      }
+     
+     connection = false;
          
    }
    
@@ -48,6 +45,11 @@ public class EchoServer {
    client.close();
    System.out.println("[Server]: Server process terminated by client.");
    
+  } catch (SocketException e){
+    System.out.print("[Server]: Connection Reset");
+    System.exit(1);
+  } catch (EOFException e){
+    System.out.println("[Server]: Client Connection Closed.");
   } catch (IOException e) {
    e.printStackTrace();
   }

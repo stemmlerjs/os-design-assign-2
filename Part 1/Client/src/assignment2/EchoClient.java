@@ -37,6 +37,7 @@ public class EchoClient {
       
       if(message.equals(".")){
         conn.close();
+        break;
       } else {
         out.writeUTF(message);     
         String res = in.readUTF();
@@ -46,10 +47,6 @@ public class EchoClient {
       }
 
     }
-        
-
-    //conn.close();
-  
   } 
   catch (IOException e) {
    System.out.println("Server Connection Failed: Server not available.");
