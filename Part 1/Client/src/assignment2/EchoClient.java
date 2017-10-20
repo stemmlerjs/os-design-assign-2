@@ -2,57 +2,60 @@ package assignment2;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class EchoClient {
-	
-	static byte [] prepareMessage (String message) {
-		byte [] messageBytes = message.getBytes();
-		byte [] retData = new byte [messageBytes.length + 1];
-		
-		for (int i = 0; i < messageBytes.length; i++) {
-			retData[i] = messageBytes[i];
-		}
-		
-		// Add null byte to specify termination
-		retData[retData.length - 1] = 0x00;
-		
-		return retData;
-	}
-	
-	public static void main (String [] args) {
-		
-		try {
-			//make connection to server socket
-			Socket conn = new Socket("127.0.0.1", 8998);
-			
-			InputStream in = conn.getInputStream();
-			OutputStream out = conn.getOutputStream();
-			
+  
+  private static int port = 8998;
+  private static String hostname;
+ 
+ public static void main (String [] args) {
+  
+   
+   if(args.length != 1){
+     System.out.println("Usage: EchoClient hostname");
+     System.exit(1);
+   } else {
+     hostname = args[0];
+   }
+   
+   Scanner sc = new Scanner(System.in);
+  
+  try {
+   //make connection to server socket
+   Socket conn = new Socket(hostname, port);
+   
+   DataOutputStream out = new DataOutputStream(conn.getOutputStream());
+   
+   DataInputStream in = new DataInputStream(new BufferedInputStream(conn.getInputStream()));
+   
 
-				String message = "";
-				
-				for (String arg : args) {
-				    message += arg + " ";
-				}
-				
-				// Send message as bytes to server
-				out.write(prepareMessage(message));
-				
-				// Get echo back from server
-				System.out.println("Waiting for response back from server");
-				while (true) {
-					int response = in.read();
-					System.out.println("Recieved response from server " + response);
-				}
-				
-				// conn.close();
-		
-		} 
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+    String message = "";
+    
+    while(true){
+      message = sc.nextLine();
+      
+      if(message.equals(".")){
+        conn.close();
+      } else {
+        out.writeUTF(message);     
+        String res = in.readUTF();
+        if(res != null) {
+          System.out.println("[Echo]: " + res);
+        }
+      }
+
+    }
+        
+
+    //conn.close();
+  
+  } 
+  catch (IOException e) {
+   System.out.println("Server Connection Failed: Server not available.");
+   System.exit(1);
+  }
+  
+ }
 
 }

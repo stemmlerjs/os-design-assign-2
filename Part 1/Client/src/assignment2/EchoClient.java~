@@ -1,0 +1,58 @@
+package assignment2;
+
+import java.io.*;
+import java.net.*;
+
+public class EchoClient {
+	
+	static byte [] prepareMessage (String message) {
+		byte [] messageBytes = message.getBytes();
+		byte [] retData = new byte [messageBytes.length + 1];
+		
+		for (int i = 0; i < messageBytes.length; i++) {
+			retData[i] = messageBytes[i];
+		}
+		
+		// Add null byte to specify termination
+		retData[retData.length - 1] = 0x00;
+		
+		return retData;
+	}
+	
+	public static void main (String [] args) {
+		
+		try {
+			//make connection to server socket
+			Socket conn = new Socket("127.0.0.1", 8998);
+			
+			InputStream in = conn.getInputStream();
+			OutputStream out = conn.getOutputStream();
+			
+
+				String message = "";
+				
+				for (String arg : args) {
+				    message += arg + " ";
+				}
+				
+				// Send message as bytes to server
+				out.write(prepareMessage(message));
+				
+				// Get echo back from server
+				System.out.println("Waiting for response back from server");
+				while (true) {
+					int response = in.read();
+					System.out.println("Recieved response from server " + response);
+				}
+				
+				//conn.close();
+		
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+}
