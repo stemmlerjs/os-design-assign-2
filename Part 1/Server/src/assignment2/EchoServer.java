@@ -23,18 +23,39 @@ public class EchoServer {
      System.out.println("[Server]: Client connected");
      
      // Get the input and output stream from the socket connection
-     DataOutputStream out = new DataOutputStream(client.getOutputStream());           
+     DataOutputStream out = new DataOutputStream(client.getOutputStream());
+     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
      
-     DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
+     //DataInputStream in = new DataInputStream(new BufferedInputStream(client.getInputStream()));
+     InputStream in = client.getInputStream();
      
      while(connection){
        //Get the message from the input stream
-       String msg = in.readUTF();
-       System.out.println("[Server]: Message received: " + msg);
+       //String msg = in.readUTF();
+
+         int nRead;
+         byte[] data = new byte[16384];
+
+         if ((nRead = in.read(data, 0, data.length)) != -1){
+             buffer.write(data,0,nRead);
+         } else if ((nRead = in.read(data, 0, data.length)) == -1){
+             break;
+         }
+
+         buffer.flush();
+
+         byte[] byteMsg = buffer.toByteArray();
+
+         String msg = new String(byteMsg, "UTF-8");
+
+
+
+         System.out.println("[Server]: Message received: " + msg);
        
        //Output the message to the output stream
-       out.writeUTF(msg);
+       out.write(byteMsg);
        out.flush();
+       buffer.reset();
      }
      
      connection = false;
