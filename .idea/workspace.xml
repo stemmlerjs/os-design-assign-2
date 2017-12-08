@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7dbcdd39-f91a-4c1f-82a2-e0f4df95c348" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Part 1/Client/src/assignment2/EchoClient.class" afterPath="$PROJECT_DIR$/Part 1/Client/src/assignment2/EchoClient.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Part 1/Server/src/assignment2/EchoServer.class" afterPath="$PROJECT_DIR$/Part 1/Server/src/assignment2/EchoServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Part 1/Client/src/assignment2/EchoClient.java" afterPath="$PROJECT_DIR$/Part 1/Client/src/assignment2/EchoClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Part 1/Server/src/assignment2/EchoServer.java" afterPath="$PROJECT_DIR$/Part 1/Server/src/assignment2/EchoServer.java" />
-    </list>
+    <list default="true" id="7dbcdd39-f91a-4c1f-82a2-e0f4df95c348" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,7 +18,7 @@
       <file leaf-file-name="EchoClient.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Part 1/Client/src/assignment2/EchoClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
+            <state relative-caret-position="612">
               <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
               <folding />
             </state>
@@ -505,7 +500,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Part 1/Client/src/assignment2/EchoClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
+        <state relative-caret-position="612">
           <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding />
         </state>
