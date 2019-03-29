@@ -1,6 +1,9 @@
 # os-design-assign-2
 Assignment #2 - SYST44288 - Operating Systems Design And Systems Programming
 
+# About using this for your assignment submission
+If you're going to download this assignment and submit it for class, you should ensure that you at the very least understand how this works. You'd be doing yourself a disservice if you just copy+paste and click "submit". 
+
 ## Part 1
 An echo server echoes back whatever it receives from a client. For example, if a client sends the server the string ```Hello there!```, the server will respond with ```Hello there!```
 
